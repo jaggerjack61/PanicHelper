@@ -8,9 +8,12 @@
         <entry key="..\:/Users/jaggerjack61/Documents/GitHub/PanicHelper/app/src/main/res/layout/activity_main.xml" value="0.19635416666666666" />
         <entry key="..\:/Users/jaggerjack61/Documents/GitHub/PanicHelper/app/src/main/res/layout/activity_settings.xml" value="0.19635416666666666" />
         <entry key="..\:/Users/jaggerjack61/Documents/GitHub/PanicHelper/app/src/main/res/layout/activity_spash_screen.xml" value="0.19635416666666666" />
+        <entry key="..\:/Users/micheck/Documents/GitHub/PanicHelper/app/src/main/res/layout/activity_main.xml" value="0.1734375" />
+        <entry key="..\:/Users/micheck/Documents/GitHub/PanicHelper/app/src/main/res/layout/activity_settings.xml" value="0.1734375" />
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

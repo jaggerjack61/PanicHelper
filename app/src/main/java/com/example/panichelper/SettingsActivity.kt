@@ -25,13 +25,14 @@ class SettingsActivity : AppCompatActivity() {
         val phoneNumber=findViewById<EditText>(R.id.editTxt).text.toString()
         val email=findViewById<EditText>(R.id.editTxt2).text.toString()
         val customText=findViewById<EditText>(R.id.editTxt3).text.toString()
-
+        val doctorID=findViewById<EditText>(R.id.editTxt4).text.toString()
         val sharedPreferences = getSharedPreferences("savedSettings", Context.MODE_PRIVATE)
         val editor=sharedPreferences.edit()
         editor.apply{
             putString("phoneNumber",phoneNumber)
             putString("email",email)
             putString("customText",customText)
+            putString("doctorID",doctorID)
 
         }.apply()
 
@@ -45,12 +46,15 @@ class SettingsActivity : AppCompatActivity() {
         val phoneNumber=sharedPreferences.getString("phoneNumber",null)
         val email=sharedPreferences.getString("email",null)
         val customText=sharedPreferences.getString("customText",null)
+        val doctorID=sharedPreferences.getString("doctorID",null)
         val phoneNumberTxt=findViewById<EditText>(R.id.editTxt)
         val emailTxt=findViewById<EditText>(R.id.editTxt2)
         val customTextTxt=findViewById<EditText>(R.id.editTxt3)
+        val doctorIDTxt=findViewById<EditText>(R.id.editTxt4)
         phoneNumberTxt.setText(phoneNumber)
         emailTxt.setText(email)
         customTextTxt.setText(customText)
+        doctorIDTxt.setText(doctorID)
 
     }
 }
