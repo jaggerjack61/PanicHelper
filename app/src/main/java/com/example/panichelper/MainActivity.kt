@@ -24,8 +24,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getCurrentLocation()
+        try {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        }
+        catch(e: Exception) {
+            Toast.makeText(this,e.message,Toast.LENGTH_LONG).show()
+        }
+
+
+            getCurrentLocation()
+
         val getHelpBtn=findViewById<Button>(R.id.button)
         getHelpBtn.setOnClickListener {
             getHelp()
@@ -44,55 +52,68 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun getCurrentLocation() {
-        // checking location permission
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        try {
+            // checking location permission
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
 
-            // request permission
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQ_CODE);
+                // request permission
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQ_CODE
+                );
 
-            return
-        }
-
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                // getting the last known or current location
-                latitude = location.latitude
-                longitude = location.longitude
-                val sharedPreferences = getSharedPreferences("savedSettings", Context.MODE_PRIVATE)
-                val editor=sharedPreferences.edit()
-                editor.apply{
-                    putString("longitude","Longitude: ${location.longitude}")
-                    putString("latitude","Latitude: ${location.latitude}")
-
-                }.apply()
-
-              // Toast.makeText(this,"Longitude: ${location.longitude}",Toast.LENGTH_LONG).show()
-
-
+                return
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed on getting current location",
-                    Toast.LENGTH_SHORT).show()
+
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
             }
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    // getting the last known or current location
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    val sharedPreferences =
+                        getSharedPreferences("savedSettings", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.apply {
+                        putString("longitude", "Longitude: ${location.longitude}")
+                        putString("latitude", "Latitude: ${location.latitude}")
+
+                    }.apply()
+
+                    // Toast.makeText(this,"Longitude: ${location.longitude}",Toast.LENGTH_LONG).show()
+
+
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        this, "Failed on getting current location",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+        catch (e: Exception) {
+            Toast.makeText(this,e.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 
