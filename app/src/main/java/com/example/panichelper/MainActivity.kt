@@ -49,6 +49,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val wellnessBtn=findViewById<Button>(R.id.button5)
+        wellnessBtn.setOnClickListener {
+            val intent= Intent(this,Wellness::class.java)
+            startActivity(intent)
+        }
+
 
     }
     private fun getCurrentLocation() {
