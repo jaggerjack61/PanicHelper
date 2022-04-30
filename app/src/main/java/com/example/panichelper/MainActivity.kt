@@ -10,10 +10,13 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     var url=""
     var patient_id=""
 
+
     private var code=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +40,16 @@ class MainActivity : AppCompatActivity() {
         Log.d("tst","test")
 
         getSMSPermissions()
+        val sharedPreferences = getSharedPreferences("savedSettings", Context.MODE_PRIVATE)
+        val url = sharedPreferences.getString("email", null).toString()
+        val patient_id = sharedPreferences.getString("doctorID", null).toString()
+
+        try {
+            getVolley(url, patient_id)
+        }
+        catch (e: VolleyError){
+            Toast.makeText(this,e.message,Toast.LENGTH_LONG).show()
+        }
 
         try {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -255,7 +269,29 @@ class MainActivity : AppCompatActivity() {
             }
         queue.add(stringReq)
     }
+//
+    @SuppressLint("SetTextI18n")
+    private fun getVolley(url:String,patient_id: String) {
+    val days=findViewById<TextView>(R.id.textView3)
+    val curl=url+"/api/patient/days/"+patient_id
+    val queue = Volley.newRequestQueue(this)
+        val stringRequest = StringRequest(
+            Request.Method.GET, curl,
+            Response.Listener { response ->
+                // response
+                val strResp = response.toString()
+                // Log.d("API", strResp)
+                    //Toast.makeText(this, strResp, Toast.LENGTH_LONG).show()
+                days.text="Last panic attack:"+strResp
+            },
+            Response.ErrorListener { error ->
+                //Log.d("API", "error => $error")
+                Toast.makeText(this, "failed "+error, Toast.LENGTH_LONG).show()
+            })
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest)
+    }
 
 
-
-}
+    }
