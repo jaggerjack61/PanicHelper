@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PanicHelper">
         <activity
-            android:name=".Wellness"
+            android:name=".WellnessActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
