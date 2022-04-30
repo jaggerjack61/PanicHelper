@@ -13,14 +13,20 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import java.nio.charset.Charset
 
 class MainActivity : AppCompatActivity() {
     private val LOCATION_PERMISSION_REQ_CODE = 1000;
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    var url=""
+    var patient_id=""
 
     private var code=0
 
@@ -187,11 +193,14 @@ class MainActivity : AppCompatActivity() {
         val customText = sharedPreferences.getString("customText",null)
         val longitude = sharedPreferences.getString("longitude",null)
         val latitude = sharedPreferences.getString("latitude",null)
+        url = sharedPreferences.getString("email", null).toString()
+
+        patient_id = sharedPreferences.getString("doctorID", null).toString()
         if(phoneNumber != null){
             if(customText != null){
                 try {
                     val smsManager = SmsManager.getDefault() as SmsManager
-                    smsManager.sendTextMessage(phoneNumber, null, customText+" Lat:"+latitude+" Long:"+longitude, null, null)
+                    smsManager.sendTextMessage(phoneNumber, null, customText+" "+latitude+" "+longitude, null, null)
                     Toast.makeText(this,"Help message sent.",Toast.LENGTH_LONG).show()
                 }
                 catch(e: Exception) {
@@ -214,11 +223,39 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,"Set a phone number please", Toast.LENGTH_LONG).show()
         }
 
-
+        postVolley(url,patient_id)
         
 
 
     }
+
+    private fun postVolley(url:String,patient_id:String) {
+        val queue = Volley.newRequestQueue(this)
+        //val url = "https://private-4c0e8-simplestapi3.apiary-mock.com/message"
+        var url=url
+        url=url+"/api/patient/panic/"
+        val requestBody = "patient_id="+patient_id
+        val stringReq : StringRequest =
+            object : StringRequest(
+                Method.POST, url,
+                Response.Listener { response ->
+                    // response
+                    val strResp = response.toString()
+                    // Log.d("API", strResp)
+                    Toast.makeText(this, strResp, Toast.LENGTH_LONG).show()
+                },
+                Response.ErrorListener { error ->
+                    //Log.d("API", "error => $error")
+                    Toast.makeText(this, "failed "+error, Toast.LENGTH_LONG).show()
+                }
+            ){
+                override fun getBody(): ByteArray {
+                    return requestBody.toByteArray(Charset.defaultCharset())
+                }
+            }
+        queue.add(stringReq)
+    }
+
 
 
 }
