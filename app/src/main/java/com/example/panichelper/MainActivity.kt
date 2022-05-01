@@ -21,6 +21,8 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.wearable.PutDataMapRequest
+import com.google.android.gms.wearable.Wearable
 import java.nio.charset.Charset
 
 class MainActivity : AppCompatActivity() {
@@ -86,6 +88,17 @@ class MainActivity : AppCompatActivity() {
         exitBtn.setOnClickListener {
             finishAffinity()
         }
+
+
+        val dataClient = Wearable.getDataClient(this)
+        val dataRequest = PutDataMapRequest.create("/DATA_PATH").apply {
+            dataMap.putString("KEY_STRING", "data_string")
+            dataMap.putBoolean("KEY_BOOLEAN", true)
+            dataMap.putInt("KEY_INT", 1)
+        }
+
+        val putDataRequest = dataRequest.asPutDataRequest()
+        dataClient.putDataItem(putDataRequest)
 
 
     }
