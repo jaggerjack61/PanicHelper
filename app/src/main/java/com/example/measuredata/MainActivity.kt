@@ -10,6 +10,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private var longitude: Double = 0.0
     var url=""
     var patient_id=""
+    var xyz=0
 
 
     private var code=0
@@ -132,11 +134,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun show(ti:String){
-        val text=findViewById<TextView>(R.id.textView3)
+        val text=findViewById<TextView>(R.id.textView4)
+        //val switch=findViewById<Switch>(R.id.switch1)
+
         if(!(ti=="data_string")){
             Log.d("hbm",ti)
+            if(xyz==0){
+                if(ti.toDouble()>110) {
+                    xyz=1
+                    getHelp()
+                }
+            }
+            if(ti.toDouble()<110){
+                xyz=0
+            }
 
-            text.text=ti
+
+
+
+            text.text="Heart Rate:"+ti
         }
 
     }
