@@ -1,4 +1,4 @@
-package com.example.panichelper
+package com.example.measuredata
 
 import android.Manifest
 import android.content.Context

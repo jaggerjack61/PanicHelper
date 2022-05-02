@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.panichelper">
+    package="com.example.measuredata">
 
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -17,13 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PanicHelper">
         <activity
-            android:name=".WellnessActivity"
+            android:name="com.example.measuredata.WellnessActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.example.measuredata.SettingsActivity"
             android:exported="true" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name="com.example.measuredata.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.measuredata.MainActivity"
             android:exported="true" />
     </application>
 

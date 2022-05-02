@@ -1,4 +1,4 @@
-package com.example.panichelper
+package com.example.measuredata
 
 import android.content.Context
 import android.content.Intent
@@ -21,9 +21,11 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.PutDataMapRequest
 import com.google.android.gms.wearable.Wearable
 import java.nio.charset.Charset
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private val LOCATION_PERMISSION_REQ_CODE = 1000;
@@ -90,16 +92,52 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val dataClient = Wearable.getDataClient(this)
-        val dataRequest = PutDataMapRequest.create("/DATA_PATH").apply {
-            dataMap.putString("KEY_STRING", "data_string")
-            dataMap.putBoolean("KEY_BOOLEAN", true)
-            dataMap.putInt("KEY_INT", 1)
+//        val dataClient = Wearable.getDataClient(this)
+//        val dataRequest = PutDataMapRequest.create("/DATA_PATH").apply {
+//            dataMap.putString("KEY_STRING", "data_string")
+////            dataMap.putBoolean("KEY_BOOLEAN", true)
+////            dataMap.putInt("KEY_INT", 1)
+//        }
+//
+//        val putDataRequest = dataRequest.asPutDataRequest()
+//        dataClient.putDataItem(putDataRequest)
+        thread(start=true,isDaemon=true){
+            getData()
         }
 
-        val putDataRequest = dataRequest.asPutDataRequest()
-        dataClient.putDataItem(putDataRequest)
+//        Make this into a thread
 
+
+
+
+
+    }
+
+    private fun getData(){
+        while(true) {
+            val dataClient = Wearable.getDataClient(this)
+            dataClient.dataItems.addOnSuccessListener { dataItems ->
+                dataItems.forEach { item ->
+                    if (item.uri.path == "/DATA_PATH") {
+                        val mapItem = DataMapItem.fromDataItem(item)
+                        mapItem.dataMap.getString("KEY_STRING")?.let { show(it) }
+
+                        mapItem.dataMap.getString("KEY_STRING")
+                        mapItem.dataMap.getBoolean("KEY_BOOLEAN")
+                        mapItem.dataMap.getInt("KEY_INT")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun show(ti:String){
+        val text=findViewById<TextView>(R.id.textView3)
+        if(!(ti=="data_string")){
+            Log.d("hbm",ti)
+
+            text.text=ti
+        }
 
     }
 

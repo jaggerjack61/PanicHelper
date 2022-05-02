@@ -1,4 +1,4 @@
-package com.example.panichelper
+package com.example.measuredata
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

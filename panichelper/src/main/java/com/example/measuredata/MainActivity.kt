@@ -1,10 +1,9 @@
-package com.example.panichelper
+package com.example.measuredata
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import com.example.panichelper.databinding.ActivityMainBinding
+import com.example.measuredata.databinding.ActivityMainBinding
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.Wearable
 

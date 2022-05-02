@@ -1,4 +1,4 @@
-package com.example.panichelper
+package com.example.measuredata
 
 import org.junit.Test
 
