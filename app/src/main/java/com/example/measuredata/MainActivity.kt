@@ -141,8 +141,13 @@ class MainActivity : AppCompatActivity() {
             Log.d("hbm",ti)
             if(xyz==0){
                 if(ti.toDouble()>110) {
+                    val text1=findViewById<TextView>(R.id.textView4)
+                    text1.text="Getting assistance now!!"
                     xyz=1
                     getHelp()
+                }
+                if(xyz==0){
+                    text.text="Heart Rate:"+ti
                 }
             }
             if(ti.toDouble()<110){
@@ -152,7 +157,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            text.text="Heart Rate:"+ti
+
         }
 
     }
