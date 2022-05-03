@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     var url=""
     var patient_id=""
     var xyz=0
+    var zyx=0
 
 
     private var code=0
@@ -72,6 +73,15 @@ class MainActivity : AppCompatActivity() {
             getHelp()
 
 
+        }
+
+        val switch=findViewById<Switch>(R.id.switch1)
+        switch?.setOnCheckedChangeListener { _, isChecked ->
+             zyx = if (isChecked) 1 else 0
+            Toast.makeText(
+                this@MainActivity, zyx.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
 
@@ -135,30 +145,59 @@ class MainActivity : AppCompatActivity() {
 
     private fun show(ti:String){
         val text=findViewById<TextView>(R.id.textView4)
-        //val switch=findViewById<Switch>(R.id.switch1)
-
-        if(!(ti=="data_string")){
-            Log.d("hbm",ti)
-            if(xyz==0){
-                if(ti.toDouble()>110) {
-                    val text1=findViewById<TextView>(R.id.textView4)
-                    text1.text="Getting assistance now!!"
-                    xyz=1
-                    getHelp()
-                }
+        if(zyx==1){
+            if(!(ti=="data_string")){
+                Log.d("hbm",ti)
                 if(xyz==0){
-                    text.text="Heart Rate:"+ti
+                    if(ti.toDouble()>110) {
+                        val text1=findViewById<TextView>(R.id.textView4)
+                        text1.text="Getting assistance now!!"
+                        xyz=1
+                        getHelp()
+                    }
+                    if(xyz==0){
+                        text.text="Heart Rate:"+ti
+                    }
                 }
+                if(ti.toDouble()<110){
+                    xyz=0
+                }
+
+
+
+
+
             }
-            if(ti.toDouble()<110){
-                xyz=0
-            }
-
-
-
-
 
         }
+        if(zyx==0){
+            if(!(ti=="data_string")){
+                Log.d("hbm",ti)
+                if(xyz==0){
+                    if(ti.toDouble()>160) {
+                        val text1=findViewById<TextView>(R.id.textView4)
+                        text1.text="Getting assistance now!!"
+                        xyz=1
+                        getHelp()
+                    }
+                    if(xyz==0){
+                        text.text="Heart Rate:"+ti
+                    }
+                }
+                if(ti.toDouble()<160){
+                    xyz=0
+                }
+
+
+
+
+
+            }
+        }
+
+
+
+
 
     }
 
