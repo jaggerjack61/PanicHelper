@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -18,6 +15,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONException
+import java.nio.charset.Charset
 
 
 var counter=0
@@ -37,7 +35,13 @@ class ChatActivity : AppCompatActivity() {
         //getVolley()
        // jsonParse()
         Log.d("Xanakin data","test")
+        var sendBtn = findViewById<Button>(R.id.button6)
+        sendBtn.setOnClickListener {
+            postVolley()
+        }
+
         listView.adapter = MyCustomAdapter(this) // this needs to be my custom adapter telling my list what to render
+
 
 
     }
@@ -103,6 +107,39 @@ class ChatActivity : AppCompatActivity() {
 
         requestQueue.add(stringRequest)
 
+
+    }
+
+    private fun postVolley(){
+        var message=findViewById<TextView>(R.id.editTextTextPersonName5)
+
+            val queue = Volley.newRequestQueue(this)
+            //val url = "https://private-4c0e8-simplestapi3.apiary-mock.com/message"
+        val sharedPreferences = getSharedPreferences("savedSettings", Context.MODE_PRIVATE)
+        var url = sharedPreferences.getString("email", null).toString()
+//
+        val patient_id = sharedPreferences.getString("doctorID", null).toString()
+            url=url+"/api/chat/send/"
+            val requestBody = "patient_id="+patient_id+"&message="+message.text
+            val stringReq : StringRequest =
+                object : StringRequest(
+                    Method.POST, url,
+                    Response.Listener { response ->
+                        // response
+                        val strResp = response.toString()
+                        // Log.d("API", strResp)
+                        Toast.makeText(this, "sent", Toast.LENGTH_LONG).show()
+                    },
+                    Response.ErrorListener { error ->
+                        //Log.d("API", "error => $error")
+                        Toast.makeText(this, "failed "+error, Toast.LENGTH_LONG).show()
+                    }
+                ){
+                    override fun getBody(): ByteArray {
+                        return requestBody.toByteArray(Charset.defaultCharset())
+                    }
+                }
+            queue.add(stringReq)
 
     }
 
