@@ -44,6 +44,7 @@ class SettingsActivity : AppCompatActivity() {
             putString("email",url)
             putString("customText",message)
             putString("doctorID",patient_id)
+           // putJSONArray()
 
         }.apply()
 

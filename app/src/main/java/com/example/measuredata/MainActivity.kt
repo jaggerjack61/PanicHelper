@@ -9,10 +9,7 @@ import android.Manifest;
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Log
-import android.widget.Button
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
@@ -25,6 +22,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.PutDataMapRequest
 import com.google.android.gms.wearable.Wearable
+import org.json.JSONArray
 import java.nio.charset.Charset
 import kotlin.concurrent.thread
 
@@ -103,6 +101,12 @@ class MainActivity : AppCompatActivity() {
             finishAffinity()
         }
 
+        val chatBtn=findViewById<ImageView>(R.id.imageView2)
+        chatBtn.setOnClickListener {
+            val intent= Intent(this,ChatActivity::class.java)
+            startActivity(intent)
+        }
+
 
 //        val dataClient = Wearable.getDataClient(this)
 //        val dataRequest = PutDataMapRequest.create("/DATA_PATH").apply {
@@ -116,6 +120,8 @@ class MainActivity : AppCompatActivity() {
         thread(start=true,isDaemon=true){
             getData()
         }
+
+        jsonParse()
 
 //        Make this into a thread
 
@@ -402,6 +408,53 @@ class MainActivity : AppCompatActivity() {
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
+    }
+
+
+    private fun jsonParse() {
+        Log.d("Xanakin data","test2")
+        var requestQueue = Volley.newRequestQueue(this)
+        val sharedPreferences = getSharedPreferences("savedSettings", Context.MODE_PRIVATE)
+        var url = sharedPreferences.getString("email", null).toString()
+//
+        val patient_id = sharedPreferences.getString("doctorID", null).toString()
+        url=url+"/api/chat/get/"+patient_id
+       // val sharedPreferences = getSharedPreferences("savedSettings", Context.MODE_PRIVATE)
+        val editor=sharedPreferences.edit()
+
+        //val url="https://c40c-41-174-78-248.ngrok.io/api/chat/get/1"
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            Response.Listener { response ->
+                // response
+                val strResp = response.toString()
+                editor.apply{
+                    putString("JSON",strResp)
+                    // putJSONArray()
+
+                }.apply()
+                val arr= JSONArray(strResp)
+                msg=arr
+                for(i in 0 until arr.length()){
+                    val message = arr.getJSONObject(i)
+                    Log.d("xana",arr.getJSONObject(i).getString("message"))
+                    Log.d("Xanakin data1", message.getString("message"))
+
+
+                }
+                Log.d("Xanakin data1", response.toString())
+                // Log.d("API", strResp)
+                //Toast.makeText(this, strResp, Toast.LENGTH_LONG).show()
+                //days.text="Last panic attack:"+strResp
+            },
+            Response.ErrorListener { error ->
+                //Log.d("API", "error => $error")
+                Toast.makeText(this, "failed "+error, Toast.LENGTH_LONG).show()
+            })
+
+        requestQueue.add(stringRequest)
+
+
     }
 
 

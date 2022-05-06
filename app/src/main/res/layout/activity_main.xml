@@ -81,4 +81,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/stat_notify_chat"
+        tools:layout_editor_absoluteY="-9dp"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
