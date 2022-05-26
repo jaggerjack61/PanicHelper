@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PanicHelper">
         <activity
+            android:name=".NoAuthChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChatActivity"
             android:exported="false" />
         <activity

@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity() {
             if(!(ti=="data_string")){
                 Log.d("hbm",ti)
                 if(xyz==0){
-                    if(ti.toDouble()>110) {
+                    if(ti.toDouble()>90) {
                         val text1=findViewById<TextView>(R.id.textView4)
                         text1.text="Getting assistance now!!"
                         xyz=1
