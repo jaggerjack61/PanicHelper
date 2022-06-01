@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         val chatBtn=findViewById<ImageView>(R.id.imageView2)
         chatBtn.setOnClickListener {
-            val intent= Intent(this,ChatActivity::class.java)
+            val intent= Intent(this,NoAuthChatActivity::class.java)
             startActivity(intent)
         }
 
@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity() {
                         text.text="Heart Rate:"+ti
                     }
                 }
-                if(ti.toDouble()<110){
+                if(ti.toDouble()<90){
                     xyz=0
                 }
 
